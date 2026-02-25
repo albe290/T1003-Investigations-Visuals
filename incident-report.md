@@ -179,14 +179,5 @@ Alert closed following verification with user and telemetry validation.
 
 ---
 
-## Investigator Notes
 
-This investigation demonstrates correlation between endpoint detection and SIEM telemetry to validate execution legitimacy and reduce false positives.
-
-```
-
----
-
-
-```
 
