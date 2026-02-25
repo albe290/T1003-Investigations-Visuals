@@ -1,3 +1,5 @@
+
+
 # T1003 Investigations – Visuals
 
 ## Overview
@@ -29,11 +31,6 @@ This repository demonstrates how investigations are performed to:
 
 ---
 
-## 🧠 Investigation Workflow
-
-
----
-
 ## 🔍 Case Study: MITRE ATT&CK T1003 – Credential Dumping
 
 ### Detection Summary
@@ -41,6 +38,8 @@ This repository demonstrates how investigations are performed to:
 - **Technique:** T1003 – Credential Dumping
 - **Detection:** Registry hive credential access
 - **Severity:** Critical
+
+![Critical Alert T1003](./Critical%20Alert%20T1003.png)
 
 Credential dumping techniques target authentication secrets stored within operating systems to enable privilege escalation and lateral movement.
 
@@ -51,9 +50,9 @@ Credential dumping techniques target authentication secrets stored within operat
 ### 1️⃣ Process Tree Analysis
 Validated execution lineage by reviewing parent-child relationships:
 
+![Process Tree](./Process%20Tree%20.png)
 
-
-Key Validation Goals:
+**Key Validation Goals:**
 - Identify suspicious parent processes
 - Detect abnormal execution chains
 - Confirm interactive user context
@@ -61,7 +60,9 @@ Key Validation Goals:
 ---
 
 ### 2️⃣ Behavioral Validation
-Since EDR detections are behavior-based, investigation focused on intent validation:
+Since EDR detections are behavior-based, investigation focused on intent validation through process execution telemetry:
+
+![Process Execution Validation](./Process%20Execution%20Validation.png)
 
 - Binary path verification
 - Command-line analysis
@@ -71,34 +72,26 @@ Since EDR detections are behavior-based, investigation focused on intent validat
 
 ---
 
-### 3️⃣ Risk Assessment
-Although behavior matched credential dumping techniques, execution context aligned with authorized administrative activity.
+### 3️⃣ SIEM & Artifact Discovery
+To correlate endpoint behavior with broader network activity, SIEM field discovery and specific artifact validation queries were utilized to ensure full visibility:
 
-**Key Principle:**
+![SIEM Field Discovery](./siem_field_discovery.png)
 
-> Detection behavior ≠ malicious intent
+**Query Validation:**
+Below are the logic steps used to filter and validate the artifacts discovered during the investigation.
+
+![Artifact Validation Query 1](./Artifact%20Validation%20Query%201.png)
+![Artifact Validation Query 2](./Artifact%20Validation%20Query%202.png)
 
 ---
 
 ### 4️⃣ Analyst Decision
-- No malicious parent process
-- Legitimate execution context
-- No follow-on indicators of compromise
+- **No** malicious parent process
+- Legitimate execution context identified
+- **No** follow-on indicators of compromise
 
 **Classification:** Authorized Administrative Activity  
 **Outcome:** Documented and closed with validation evidence.
-
----
-
-## 📊 Visual Walkthrough
-
-Visual artifacts demonstrating investigation steps can be found in:
-
-
-
-
-
-Each visual includes annotations explaining analyst reasoning and validation steps.
 
 ---
 
@@ -106,85 +99,38 @@ Each visual includes annotations explaining analyst reasoning and validation ste
 
 This repository also serves as a structured reference for explaining investigation techniques during security engineering interviews.
 
-Below are common questions aligned with my professional experience.
-
----
-
 ### ❓ Walk me through a recent security investigation.
-
-**Approach:**
 1. Analyze alert context and MITRE mapping
 2. Validate process lineage
 3. Review execution behavior
 4. Confirm user and system context
 5. Assess risk and determine response action
 
----
-
 ### ❓ How do you reduce false positives?
-
 - Correlate EDR telemetry with authentication logs
 - Validate execution lineage
 - Improve detection logic through query refinement
 - Use contextual risk signals (asset criticality, exposure, identity activity)
-
-*(Aligned with experience improving alert accuracy by 30–40%)* :contentReference[oaicite:0]{index=0}
-
----
-
-### ❓ How do you investigate credential dumping alerts?
-
-- Review process tree first
-- Validate LSASS or registry access behavior
-- Confirm administrative legitimacy
-- Check for persistence or lateral movement
-- Evaluate follow-on activity
-
----
-
-### ❓ What telemetry do you rely on during investigations?
-
-- EDR process telemetry (CrowdStrike / Defender)
-- Authentication logs
-- SIEM correlation (Splunk / Sentinel)
-- Identity activity signals
-- Host-level artifacts
-
-*(Reflecting daily investigation workflow)* :contentReference[oaicite:1]{index=1}
-
----
-
-### ❓ How do you improve detection quality?
-
-- Tune SIEM queries (SPL/KQL)
-- Normalize telemetry sources
-- Validate log ingestion health
-- Reduce noisy alerts through correlation logic
-
-*(Aligned with detection engineering experience)* :contentReference[oaicite:2]{index=2}
+*(Aligned with experience improving alert accuracy by 30–40%)*
 
 ---
 
 ## 🛠 Skills Demonstrated
 
-- Security Operations Engineering
-- Incident Response & Investigation
-- CrowdStrike Falcon Analysis
-- SIEM Correlation (Splunk / Sentinel)
-- Detection Engineering
-- Alert Fidelity Optimization
-- Threat Validation & Risk Analysis
-- Cross-team Security Collaboration
+- **Security Operations Engineering**
+- **Incident Response & Investigation**
+- **CrowdStrike Falcon Analysis**
+- **SIEM Correlation (Splunk / Sentinel)**
+- **Detection Engineering**
+- **Alert Fidelity Optimization**
+- **Threat Validation & Risk Analysis**
+
+```
 
 ---
 
-## 🔒 Disclaimer
+### A small tip for your repo:
 
-All identifiers, usernames, hostnames, and organizational references have been anonymized to protect confidentiality.  
-This repository demonstrates investigation methodology only.
+I noticed one of your filenames has a trailing space: `Process Tree .png`. GitHub can sometimes be finicky with spaces in URLs. If the image doesn't render, I recommend renaming that file to `Process_Tree.png` (no space) and updating the link in the README.
 
----
-
-## 📌 Philosophy
-
-> Security investigations are not about tools — they are about structured thinking and evidence-based decisions.
+**Would you like me to help you write a summary "Blurb" for your GitHub profile or LinkedIn that highlights this specific project?**
