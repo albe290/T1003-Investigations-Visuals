@@ -1,43 +1,60 @@
-🕵️ Threat Hunt – PowerShell Post-Credential Access Validation
-Objective
+# 🕵️ Threat Hunt: PowerShell Post-Credential Access Validation
 
-Validate whether a credential dumping detection (MITRE T1003) was followed by attacker post-exploitation activity.
+## Objective
+Validate whether a credential dumping detection (**MITRE T1003**) was followed by attacker post-exploitation activity or lateral movement.
 
-Hypothesis
+## Hypothesis
+If the identified credential access was malicious, the actor would likely follow up by executing obfuscated PowerShell commands to maintain persistence or harvest further environment data.
 
-If credential access was malicious, attackers would likely execute obfuscated PowerShell commands.
+---
 
-Hunt Query (CrowdStrike)
+## 🛠 Hunt Query (CrowdStrike Falcon)
 
-Event Type: ProcessRollup2
-Host: VSDWSDLCTXSPT01
-Indicators:
+**Event Type:** `ProcessRollup2`  
+**Target Host:** `VSDWSDLCTXSPT01`  
 
-powershell.exe
+**Indicators of Interest:**
+* `powershell.exe`
+* `powershell_ise.exe`
+* `CommandLine` contains `-enc` or `-EncodedCommand`
 
-powershell_ise.exe
+---
 
-CommandLine contains -enc
+## 🔍 Investigation Steps
 
-Investigation Steps
+1.  **Scope:** Isolated the hunt specifically to the endpoint where the T1003 alert originated.
+2.  **Querying:** Extracted all `ProcessRollup2` telemetry for PowerShell execution within a 4-hour window of the initial alert.
+3.  **De-obfuscation Check:** Specifically searched for encoded command lines or non-standard execution flags.
+4.  **Contextual Validation:** Compared the `ParentProcess` and `User` context against known administrative baseline behavior.
 
-Scoped hunt to affected endpoint
+---
 
-Queried PowerShell execution telemetry
+## 📊 Visual Evidence: ProcessRollup2 Analysis
 
-Searched for encoded or obfuscated commands
+To validate the post-alert activity, I reviewed the process execution metadata to identify any deviations from the baseline.
 
-Validated execution context
+### PowerShell Execution Review
+![ProcessRollup2 Analysis 1](https://github.com/albe290/T1003-Investigations-Visuals/blob/main/Threat%20Hunt%20ProcessRollup%202-1.png?raw=true)
 
-Findings
+### Command Line Correlation
+![ProcessRollup2 Analysis 2](https://github.com/albe290/T1003-Investigations-Visuals/blob/main/Threat%20Hunt%20ProcessRollup%202.png?raw=true)
 
-PowerShell execution observed
+---
 
-No encoded payloads identified
+## 📝 Findings & Conclusion
 
-Activity aligned with authorized administrative usage
+### Findings:
+* **PowerShell Activity:** Execution was observed on the target host following the registry access.
+* **Payload Analysis:** No encoded payloads or suspicious download strings (`IWR`, `Net.WebClient`) were identified.
+* **Administrative Alignment:** The command-line arguments and parent process tree aligned with authorized administrative scripts used for environment auditing.
 
-Conclusion
+### Conclusion:
+**No evidence of post-exploitation activity.** The detection was validated as non-malicious administrative behavior. The hunt confirms that while the T1003 trigger was technically accurate (behavioral match), the intent was benign.
 
-No evidence of post-exploitation activity. Detection validated as non-malicious administrative behavior.
+---
 
+## 🛠 Skills Applied
+* **Threat Hunting (Hypothesis-based)**
+* **EDR Telemetry Analysis (CrowdStrike)**
+* **PowerShell Forensics**
+* **Post-Exploitation Validation**
