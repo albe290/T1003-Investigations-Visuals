@@ -127,10 +127,4 @@ This repository also serves as a structured reference for explaining investigati
 
 ```
 
----
 
-### A small tip for your repo:
-
-I noticed one of your filenames has a trailing space: `Process Tree .png`. GitHub can sometimes be finicky with spaces in URLs. If the image doesn't render, I recommend renaming that file to `Process_Tree.png` (no space) and updating the link in the README.
-
-**Would you like me to help you write a summary "Blurb" for your GitHub profile or LinkedIn that highlights this specific project?**
